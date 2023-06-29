@@ -21,6 +21,8 @@ namespace FortniteLauncher.Utils
             public static readonly Uri Token = new Uri(Base, "/account/api/oauth/token");
         }
 
+        
+
         public static async Task<FToken> Login(string email, string password)
         {
             var client = new RestClient();
@@ -33,7 +35,6 @@ namespace FortniteLauncher.Utils
 
             var response = await client.ExecuteAsync(request);
 
-            File.WriteAllText("test.txt", response.Content);
             Console.WriteLine(response.Content);
 
             return JsonConvert.DeserializeObject<FToken>(response.Content);

@@ -30,14 +30,17 @@ namespace FortniteLauncher.Utils
 
         public static async Task DownloadPak(string path)
         {
-            long ApiSize = long.Parse(await new HttpClient().GetStringAsync(Endpoints.FileSize));
-
             var paksName = Path.Combine(path, "FortniteGame\\Content\\Paks\\z_KaedeContent1.pak");
 
-            long fileSize = new FileInfo(paksName).Length;
+            if(File.Exists(paksName))
+            {
+                long ApiSize = long.Parse(await new HttpClient().GetStringAsync(Endpoints.FileSize));
 
-            if (fileSize == ApiSize)
-                return;
+                long fileSize = new FileInfo(paksName).Length;
+
+                if (fileSize == ApiSize)
+                    return;
+            }
 
             await File.WriteAllBytesAsync(paksName, await new HttpClient().GetByteArrayAsync(Endpoints.PakFile));
 
