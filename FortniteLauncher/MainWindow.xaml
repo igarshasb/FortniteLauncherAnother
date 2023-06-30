@@ -43,13 +43,18 @@
         </Grid>
 
         <Grid Visibility="Visible" x:Name="RootMainGrid">
-            <Ellipse Height="70" Width="70" Margin="10,45,720,319">
+            <Ellipse Height="65" Width="65" Margin="10,45,720,319">
                 <Ellipse.Fill>
-                    <ImageBrush x:Name="SkinIcon" ImageSource="http://35.197.192.33:1337/api/files/Icon.png"/>
+                    <ImageBrush x:Name="RarityIcon"  ImageSource="http://35.197.192.33:1337/api/files/rare.png"/>
+                </Ellipse.Fill>
+            </Ellipse>
+            <Ellipse Height="65" Width="65" Margin="10,45,720,319">
+                <Ellipse.Fill>
+                    <ImageBrush x:Name="SkinIcon" Stretch="Fill" ImageSource="http://35.197.192.33:1337/api/files/Icon.png"/>
                 </Ellipse.Fill>
             </Ellipse>
 
-            <Label x:Name="SignedInAsLable" FontSize="16" Foreground="White" Content="Signed in as - " Margin="99,70,503,332"/>
+            <Label x:Name="SignedInAsLable" FontSize="16" Foreground="White" Content="Signed in as - " Margin="88,70,514,332"/>
 
             <Label FontSize="20" Foreground="White" Content="Fortnite Game path:" Margin="10,152,592,251"/>
             <ui:TextBox x:Name="FModTxt" IsReadOnly="True" PlaceholderText="Please select a path..." Margin="10,183,90,0" VerticalAlignment="Top"/>
@@ -66,7 +71,12 @@
                     <ImageBrush ImageSource="http://0xkaede.xyz:1337/api/files/Icon.png"/>
                 </Ellipse.Fill>
             </Ellipse>
-
+            <Ellipse Height="130" Width="130" Margin="318,51,352,253">
+                <Ellipse.Fill>
+                    <ImageBrush x:Name="Rarity"/>
+                </Ellipse.Fill>
+            </Ellipse>
+            
             <ui:TextBox x:Name="EmailTxt" PlaceholderText="Please enter email here..." Margin="231,219,231,0" VerticalAlignment="Top"/>
             <ui:PasswordBox x:Name="PasswordTxt"  PlaceholderText="Please enter password here..." Margin="231,273,231,0" VerticalAlignment="Top"/>
 

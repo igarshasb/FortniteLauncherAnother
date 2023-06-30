@@ -205,7 +205,10 @@ namespace FortniteLauncher
                 {
                     var cid = await FortniteUtils.GetCharacter(fTokenData.AccountId, fTokenData.AccessToken);
 
-                    SkinIcon.ImageSource = new BitmapImage(new Uri(await FortniteUtils.GetIcon(cid)));
+                    var characterData = await FortniteUtils.GetIcon(cid);
+
+                    SkinIcon.ImageSource = new BitmapImage(new Uri(characterData.Images.SmallIcon));
+                    RarityIcon.ImageSource = new BitmapImage(new Uri($"http://0xkaede.xyz:1337/api/files/{characterData.Rarity.Value}.png"));
                 }
             });
 
@@ -259,7 +262,10 @@ namespace FortniteLauncher
 
             var cid = await FortniteUtils.GetCharacter(fTokenData.AccountId, fTokenData.AccessToken);
 
-            SkinIcon.ImageSource = new BitmapImage(new Uri(await FortniteUtils.GetIcon(cid)));
+            var characterData = await FortniteUtils.GetIcon(cid);
+
+            SkinIcon.ImageSource = new BitmapImage(new Uri(characterData.Images.SmallIcon));
+            RarityIcon.ImageSource = new BitmapImage(new Uri($"http://0xkaede.xyz:1337/api/files/{characterData.Rarity.Value}.png"));
 
             RootLoadingGrid.Visibility = Visibility.Hidden;
             RootMainGrid.Visibility = Visibility.Visible;

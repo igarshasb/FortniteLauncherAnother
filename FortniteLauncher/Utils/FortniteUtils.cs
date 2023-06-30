@@ -56,7 +56,7 @@ namespace FortniteLauncher.Utils
             return athenaData.ProfileChanges[0].Profile.Items.LawinLoadOut.Attributes.LockerSlotsData.Slots.Character.Items[0].Replace("AthenaCharacter:", "");
         }
 
-        public static async Task<string> GetIcon(string cid)
+        public static async Task<Cosmetic> GetIcon(string cid)
         {
             var CheckCID = cid.Contains("FMod") ? "CID_028_Athena_Commando_F" : cid;
 
@@ -67,7 +67,7 @@ namespace FortniteLauncher.Utils
 
             var characterData = JsonConvert.DeserializeObject<FortniteAPIResponse<Cosmetic>>(response.Content).Data;
 
-            return characterData.Images.SmallIcon;
+            return characterData;
         }
     }
 }

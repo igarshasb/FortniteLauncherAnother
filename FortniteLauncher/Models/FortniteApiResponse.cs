@@ -26,6 +26,21 @@ namespace FortniteLauncher.Models
 
         [JsonProperty("images")]
         public Images Images { get; set; }
+
+        [JsonProperty("rarity")]
+        public Type Rarity { get; set; }
+    }
+
+    public class Type
+    {
+        [JsonProperty("value")]
+        public string Value { get; set; }
+
+        [JsonProperty("displayValue")]
+        public string DisplayValue { get; set; }
+
+        [JsonProperty("backendValue")]
+        public string BackendValue { get; set; }
     }
 
     public class Images
