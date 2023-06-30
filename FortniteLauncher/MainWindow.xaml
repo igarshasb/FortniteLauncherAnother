@@ -63,7 +63,7 @@
         <Grid Visibility="Hidden" x:Name="RootLoginGrid">
             <Ellipse Height="130" Width="130" Margin="318,51,352,253">
                 <Ellipse.Fill>
-                    <ImageBrush ImageSource="http://35.197.192.33:1337/api/files/Icon.png"/>
+                    <ImageBrush ImageSource="http://0xkaede.xyz:1337/api/files/Icon.png"/>
                 </Ellipse.Fill>
             </Ellipse>
 

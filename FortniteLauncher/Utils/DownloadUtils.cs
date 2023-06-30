@@ -15,7 +15,7 @@ namespace FortniteLauncher.Utils
     {
         internal class Endpoints
         {
-            public static readonly Uri Base = new Uri("http://35.197.192.33:1337/api/");
+            public static readonly Uri Base = new Uri("http://0xkaede.xyz:1337/api/");
 
             public static readonly Uri PakFile = new Uri(Base, "files/z_FModContent1.pak");
             public static readonly Uri SigFile = new Uri(Base, "files/z_FModContent1.sig");
