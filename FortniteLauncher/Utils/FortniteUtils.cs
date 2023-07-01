@@ -56,16 +56,14 @@ namespace FortniteLauncher.Utils
             return athenaData.ProfileChanges[0].Profile.Items.LawinLoadOut.Attributes.LockerSlotsData.Slots.Character.Items[0].Replace("AthenaCharacter:", "");
         }
 
-        public static async Task<Cosmetic> GetIcon(string cid)
+        public static async Task<FKaedeApi> GetIcon(string cid)
         {
-            var CheckCID = cid.Contains("FMod") ? "CID_028_Athena_Commando_F" : cid;
-
             var client = new RestClient();
-            var request = new RestRequest($"https://fortnite-api.com/v2/cosmetics/br/{CheckCID}", Method.Get);
+            var request = new RestRequest($"http://0xkaede.xyz/api/item/id/{cid}", Method.Get);
 
             var response = await client.ExecuteAsync(request);
 
-            var characterData = JsonConvert.DeserializeObject<FortniteAPIResponse<Cosmetic>>(response.Content).Data;
+            var characterData = JsonConvert.DeserializeObject<FKaedeApi>(response.Content);
 
             return characterData;
         }

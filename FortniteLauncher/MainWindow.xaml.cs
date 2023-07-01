@@ -24,6 +24,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Wpf.Ui.Appearance;
 using static System.Net.Mime.MediaTypeNames;
+using static System.Net.WebRequestMethods;
 using MessageBox = Wpf.Ui.Controls.MessageBox;
 
 namespace FortniteLauncher
@@ -114,7 +115,7 @@ namespace FortniteLauncher
                  RootLoadingGrid.Visibility = Visibility.Visible;
              });
 
-            if (!File.Exists(launcherExe))
+            if (!System.IO.File.Exists(launcherExe))
             {
                 _ = Dispatcher.Invoke(async () =>
                 {
@@ -124,7 +125,7 @@ namespace FortniteLauncher
                 await DownloadUtils.DownloadFakeLauncher(launcherExe);
             }
 
-            if (!File.Exists(shippingExe))
+            if (!System.IO.File.Exists(shippingExe))
             {
                 _ = Dispatcher.Invoke(async () =>
                 {
@@ -207,8 +208,13 @@ namespace FortniteLauncher
 
                     var characterData = await FortniteUtils.GetIcon(cid);
 
-                    SkinIcon.ImageSource = new BitmapImage(new Uri(characterData.Images.SmallIcon));
-                    RarityIcon.ImageSource = new BitmapImage(new Uri($"http://0xkaede.xyz:1337/api/files/{characterData.Rarity.Value}.png"));
+                    SkinIcon.ImageSource = new BitmapImage(new Uri(characterData.Image));
+
+                    var icon = characterData.Series is "" ?
+                    $"http://0xkaede.xyz:1337/api/files/{characterData.Rarity}.png" :
+                    $"http://0xkaede.xyz:1337/api/files/{characterData.Series}.png";
+
+                    RarityIcon.ImageSource = new BitmapImage(new Uri($"http://0xkaede.xyz:1337/api/files/{icon}.png"));
                 }
             });
 
@@ -264,8 +270,13 @@ namespace FortniteLauncher
 
             var characterData = await FortniteUtils.GetIcon(cid);
 
-            SkinIcon.ImageSource = new BitmapImage(new Uri(characterData.Images.SmallIcon));
-            RarityIcon.ImageSource = new BitmapImage(new Uri($"http://0xkaede.xyz:1337/api/files/{characterData.Rarity.Value}.png"));
+            SkinIcon.ImageSource = new BitmapImage(new Uri(characterData.Image));
+
+            var icon = characterData.Series is "" ?
+                    $"http://0xkaede.xyz:1337/api/files/{characterData.Rarity}.png" :
+                    $"http://0xkaede.xyz:1337/api/files/{characterData.Series}.png";
+
+            RarityIcon.ImageSource = new BitmapImage(new Uri(icon));
 
             RootLoadingGrid.Visibility = Visibility.Hidden;
             RootMainGrid.Visibility = Visibility.Visible;
