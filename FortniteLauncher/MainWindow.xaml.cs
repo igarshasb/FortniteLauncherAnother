@@ -214,7 +214,7 @@ namespace FortniteLauncher
                     $"http://0xkaede.xyz:1337/api/files/{characterData.Rarity}.png" :
                     $"http://0xkaede.xyz:1337/api/files/{characterData.Series}.png";
 
-                    RarityIcon.ImageSource = new BitmapImage(new Uri($"http://0xkaede.xyz:1337/api/files/{icon}.png"));
+                    RarityIcon.ImageSource = new BitmapImage(new Uri(icon));
                 }
             });
 
