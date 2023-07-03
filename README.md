@@ -1,6 +1,6 @@
 # Fornite Launcher
 
-A simple Fortnite Launcher that allows you to launch any Fortnite version that is developed in C#.
+A simple Fortnite Launcher that allows you to launch any Fortnite version and that is developed in C#.
 
 ### Important
 - Please credit me if you use this launcher publicy.
