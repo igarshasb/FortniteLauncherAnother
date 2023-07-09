@@ -10,6 +10,9 @@ namespace FortniteLauncher.Utils
     public static class Win32
     {
         [DllImport("kernel32.dll")]
+        public static extern bool AllocConsole();
+
+        [DllImport("kernel32.dll")]
         public static extern IntPtr GetConsoleWindow();
 
         [DllImport("user32.dll")]

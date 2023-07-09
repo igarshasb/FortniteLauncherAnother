@@ -1,19 +1,11 @@
 ﻿using FortniteLauncher.Models;
+using FortniteLauncher.Utils;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using RestSharp;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Documents;
-using Wpf.Ui.Dpi;
-using static System.Windows.Forms.Design.AxImporter;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
-namespace FortniteLauncher.Utils
+namespace FortniteLauncher.Fortnite
 {
     public class FortniteUtils
     {
@@ -21,33 +13,35 @@ namespace FortniteLauncher.Utils
         {
             public static readonly Uri Base = new Uri("http://0xkaede.xyz:8080/");
 
-            public static readonly Uri Token = new Uri(Base, "/account/api/oauth/token");
+            public static readonly Uri Token = new Uri(Base, "account/api/oauth/token");
 
             public static Uri Profile(string id) => new Uri(Base, $"fortnite/api/game/v2/profile/{id}/client/QueryProfile?profileId=athena&rvn=-1");
         }
 
-       public static async Task<FToken> Login(string email, string password)
-       {
+        public static async Task<FToken> Login(string email, string password)
+        {
             var client = new RestClient();
             var request = new RestRequest(Endpoints.Token, Method.Post)
                 .AddHeader("authorization", "basic ZWM2ODRiOGM2ODdmNDc5ZmFkZWEzY2IyYWQ4M2Y1YzY6ZTFmMzFjMjExZjI4NDEzMTg2MjYyZDM3YTEzZmM4NGQ=")
                 .AddHeader("Content-Type", "application/x-www-form-urlencoded")
                 .AddParameter("grant_type", "password")
                 .AddParameter("username", email)
-                .AddParameter("password", password);
+               .AddParameter("password", password);
+
+            Logger.Log($"Making a Post Request to {Endpoints.Token} type of {typeof(FToken).Name}");
 
             var response = await client.ExecuteAsync(request);
 
-            Console.WriteLine(response.Content);
-
             return JsonConvert.DeserializeObject<FToken>(response.Content);
-       }
+        }
 
         public static async Task<string> GetCharacter(string id, string bearer)
         {
             var client = new RestClient();
             var request = new RestRequest(Endpoints.Profile(id), Method.Post)
                 .AddHeader("authorization", $"bearer {bearer}");
+
+            Logger.Log($"Making a Post Request to {Endpoints.Profile(id)} type of {typeof(FAthena).Name}");
 
             var response = await client.ExecuteAsync(request);
 
@@ -60,6 +54,8 @@ namespace FortniteLauncher.Utils
         {
             var client = new RestClient();
             var request = new RestRequest($"http://0xkaede.xyz/api/item/id/{cid}", Method.Get);
+
+            Logger.Log($"Making a Get Request to {Endpoints.Profile($"http://0xkaede.xyz/api/item/id/{cid}")} type of {typeof(FKaedeApi).Name}");
 
             var response = await client.ExecuteAsync(request);
 

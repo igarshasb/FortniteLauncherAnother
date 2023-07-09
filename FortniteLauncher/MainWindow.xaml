@@ -9,7 +9,7 @@
         Background="{DynamicResource ApplicationBackgroundBrush}"
     Style="{DynamicResource UiWindow}"
     WindowStartupLocation="CenterScreen"
-        Title="MainWindow" Height="450" Width="800" MinHeight="450" MinWidth="800" MaxHeight="450" MaxWidth="800">
+        Title="MainWindow" Height="600" Width="1050" MinHeight="600" MinWidth="1050" MaxHeight="600" MaxWidth="1050">
     <Grid>
 
         <Grid
@@ -43,45 +43,69 @@
         </Grid>
 
         <Grid Visibility="Visible" x:Name="RootMainGrid">
-            <Ellipse Height="65" Width="65" Margin="10,45,720,319">
-                <Ellipse.Fill>
-                    <ImageBrush x:Name="RarityIcon"  ImageSource="http://35.197.192.33:1337/api/files/rare.png"/>
-                </Ellipse.Fill>
-            </Ellipse>
-            <Ellipse Height="65" Width="65" Margin="10,45,720,319">
-                <Ellipse.Fill>
-                    <ImageBrush x:Name="SkinIcon" Stretch="Fill" ImageSource="http://35.197.192.33:1337/api/files/Icon.png"/>
-                </Ellipse.Fill>
-            </Ellipse>
+            <Canvas Margin="0,0,6,0">
+                <Ellipse Canvas.Top="58" Canvas.Bottom="2" Canvas.Left="10" Canvas.Right="2" Width="100" Height="100" HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <Ellipse.Fill>
+                        <ImageBrush x:Name="RarityIcon" ImageSource="http://0xkaede.xyz:1337/api/files/Icon.png"  />
+                    </Ellipse.Fill>
+                </Ellipse>
+            </Canvas>
+            <Canvas Margin="0,0,6,0">
+                <Ellipse Canvas.Top="59" Canvas.Bottom="2" Canvas.Left="10" Canvas.Right="2" Width="100" Height="100" HorizontalAlignment="Center" VerticalAlignment="Top">
+                    <Ellipse.Fill>
+                        <ImageBrush x:Name="SkinIcon" ImageSource="http://0xkaede.xyz:1337/api/files/Icon.png"  />
+                    </Ellipse.Fill>
+                </Ellipse>
+            </Canvas>
 
-            <Label x:Name="SignedInAsLable" FontSize="16" Foreground="White" Content="Signed in as - " Margin="88,70,514,332"/>
+            <Label x:Name="SignedInAsLable" FontSize="16" Foreground="White" Content="Signed in as - " Margin="114,97,696,460"/>
 
-            <Label FontSize="20" Foreground="White" Content="Fortnite Game path:" Margin="10,152,592,251"/>
-            <ui:TextBox x:Name="FModTxt" IsReadOnly="True" PlaceholderText="Please select a path..." Margin="10,183,90,0" VerticalAlignment="Top"/>
-            <ui:Button x:Name="SelectPath" Click="SelectPath_Click" Appearance="Success" Content="..." Margin="715,186,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.506,0.999"/>
+            <Label FontSize="20" Foreground="White" Content="Fortnite Game path:" Margin="10,167,592,386"/>
+            <ui:TextBox x:Name="CurrentPathTxt" IsReadOnly="True" PlaceholderText="Please select a path..." Margin="10,198,10,0" VerticalAlignment="Top"/>
 
-            <ui:Button x:Name="LaunchBtn" Click="LaunchBtn_Click" Appearance="Success" Content="Launch Game" Margin="595,390,0,0" VerticalAlignment="Top" Width="195"/>
+            <ui:Button x:Name="LaunchBtn" Click="LaunchBtn_Click" Appearance="Success" Content="Launch Game" Margin="0,256,0,0" VerticalAlignment="Top" Width="1030" HorizontalAlignment="Center"/>
 
+            <ui:Card x:Name="File" Content="SS" Margin="10,309,10,0" VerticalAlignment="Top">
+                
+            </ui:Card>
 
         </Grid>
 
         <Grid Visibility="Hidden" x:Name="RootLoginGrid">
-            <Ellipse Height="130" Width="130" Margin="318,51,352,253">
-                <Ellipse.Fill>
-                    <ImageBrush ImageSource="http://0xkaede.xyz:1337/api/files/Icon.png"/>
-                </Ellipse.Fill>
-            </Ellipse>
-            <Ellipse Height="130" Width="130" Margin="318,51,352,253">
-                <Ellipse.Fill>
-                    <ImageBrush x:Name="Rarity"/>
-                </Ellipse.Fill>
-            </Ellipse>
-            
-            <ui:TextBox x:Name="EmailTxt" PlaceholderText="Please enter email here..." Margin="231,219,231,0" VerticalAlignment="Top"/>
-            <ui:PasswordBox x:Name="PasswordTxt"  PlaceholderText="Please enter password here..." Margin="231,273,231,0" VerticalAlignment="Top"/>
+            <Canvas Margin="0,0,6,0">
+                <Ellipse Canvas.Top="90" Canvas.Bottom="2" Canvas.Left="447" Canvas.Right="2" Width="150" Height="150" HorizontalAlignment="Center" VerticalAlignment="Top">
+                    <Ellipse.Fill>
+                        <ImageBrush ImageSource="http://0xkaede.xyz:1337/api/files/Icon.png"  />
+                    </Ellipse.Fill>
+                </Ellipse>
+            </Canvas>
 
-            <ui:Button x:Name="Login" Click="Login_Click" Appearance="Success" Content="Login" Margin="0,325,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.506,0.999" Width="338" HorizontalAlignment="Center"/>
 
+            <ui:TextBox x:Name="EmailTxt" PlaceholderText="Please enter email here..." Margin="231,261,231,0" VerticalAlignment="Top"/>
+            <ui:PasswordBox x:Name="PasswordTxt"  PlaceholderText="Please enter password here..." Margin="231,315,231,0" VerticalAlignment="Top"/>
+
+            <ui:Button x:Name="Login" Click="Login_Click" Appearance="Success" Content="Login" Margin="0,367,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.506,0.999" Width="588" HorizontalAlignment="Center"/>
+
+        </Grid>
+
+        <Grid Visibility="Hidden" x:Name="RootVersionGrid">
+            <DockPanel x:Name="VersionPanel" Margin="0,100,0,50">
+                <ScrollViewer x:Name="VersionScroll">
+                    <WrapPanel
+                                Name="Versions"/>
+                </ScrollViewer>
+            </DockPanel>
+            <Label Content="Please select the build you wanna use!" VerticalContentAlignment="Center" HorizontalAlignment="Center" Margin="179,30,179,510"/>
+            <ui:Button Content="Add Build" IsEnabled="True" Icon="Add12" Appearance="Caution" Click="AddBuildBtn_Click" Width="181" Margin="859,542,0,0" VerticalAlignment="Top"/>
+
+        </Grid>
+
+        <Grid x:Name="AddBuildGrid" Margin="225,125,225,125" Visibility="Hidden">
+            <ui:TextBox x:Name="InstallPath" IsReadOnly="True" PlaceholderText="Please select the path by clicking ..."  Margin="10,10,48,0" VerticalAlignment="Top"/>
+            <ui:Button x:Name="AddBuildBtn" Click="AddBuildBtn_Click_1" Appearance="Success" Content="..." Margin="557,10,0,0" VerticalAlignment="Top" Height="35"/>
+            <ui:TextBox x:Name="BuildName" PlaceholderText="Please put build name here..." Margin="10,68,48,0" VerticalAlignment="Top"/>
+            <ui:Button x:Name="SaveBuildBtn" Click="SaveBuildBtn_Click" Icon="Save16" Content="Save Build" Appearance="Success" Width="150" Margin="402,108,0,0" VerticalAlignment="Top"/>
+            <ui:Button x:Name="BackBuildBtn" Click="BackBuildBtn_Click" Icon="ArrowHookDownRight24" Content="Go back" Appearance="Danger" Width="149" Margin="243,108,0,0" VerticalAlignment="Top"/>
         </Grid>
 
         <ui:Snackbar x:Name="snakeBarNot" Timeout="7000"/>

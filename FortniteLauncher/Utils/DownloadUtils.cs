@@ -1,18 +1,28 @@
-﻿using System;
+﻿using Microsoft.VisualBasic.Logging;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Configuration;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Shapes;
 using System.Windows.Threading;
+using static FortniteLauncher.Globals;
 
 namespace FortniteLauncher.Utils
 {
     public class DownloadUtils
     {
+        private static int counter;
+        private static string totalfix;
+
         internal class Endpoints
         {
             public static readonly Uri Base = new Uri("http://0xkaede.xyz:1337/api/");
@@ -28,47 +38,85 @@ namespace FortniteLauncher.Utils
             public static readonly Uri FileSize = new Uri(Base, "pak/size");
         }
 
-        public static async Task DownloadPak(string path)
+        public static async Task DownloadNative()
+            => await File.WriteAllBytesAsync(Constants.RunTime, await new HttpClient().GetByteArrayAsync(Endpoints.Native));
+
+        public static async Task DownloadFakeLauncher()
+            => await File.WriteAllBytesAsync(FortniteLaucher(), await new HttpClient().GetByteArrayAsync(Endpoints.LauncherFake));
+
+        public static async Task DownloadPaks()
         {
-            var paksName = Path.Combine(path, "FortniteGame\\Content\\Paks\\z_KaedeContent1.pak");
-
-            if(File.Exists(paksName))
+            try
             {
-                long ApiSize = long.Parse(await new HttpClient().GetStringAsync(Endpoints.FileSize));
+                Logger.Log("Getting info for Custom Pak");
+                var paksName = GetPak("z_KaedeContent1");
 
-                long fileSize = new FileInfo(paksName).Length;
+                if (File.Exists(paksName))
+                {
+                    long ApiSize = long.Parse(await new HttpClient().GetStringAsync(Endpoints.FileSize));
 
-                if (fileSize == ApiSize)
-                    return;
+                    long fileSize = new FileInfo(paksName).Length;
+
+                    if (fileSize == ApiSize)
+                    {
+                        Logger.Log("Latest Custom Pak is installed!");
+                        return;
+                    }
+                }
+
+                var webclient = new WebClient();
+
+                webclient.Proxy = null;
+                webclient.DownloadFileCompleted += new AsyncCompletedEventHandler(Completed);
+                webclient.DownloadProgressChanged += new DownloadProgressChangedEventHandler(ProgressChanged);
+                webclient.DownloadFileAsync(Endpoints.PakFile, paksName);
+                while (webclient.IsBusy)
+                    await Task.Delay(1000);
+                if (File.Exists(paksName))
+                {
+                    await Task.Delay(500);
+
+                    await File.WriteAllBytesAsync(paksName.ToSig(), await new HttpClient().GetByteArrayAsync(Endpoints.SigFile));
+
+                    FileUtils.DeletePakFile(GetPak("pakchunk9000-WindowsClient"));
+                    FileUtils.DeletePakFile(GetPak("z_FModContent1"));
+                }
+                else
+                {
+                    Logger.Log($"File not downloaded: {paksName}", LogLevel.Error);
+                    FileUtils.OpenLogError(new Exception(), "Download error");
+                }
             }
-
-            await File.WriteAllBytesAsync(paksName, await new HttpClient().GetByteArrayAsync(Endpoints.PakFile));
-
-            await File.WriteAllBytesAsync(paksName.Replace(".pak", ".sig"), await new HttpClient().GetByteArrayAsync(Endpoints.SigFile));
-
-            var fmodPak = Path.Combine(path, "FortniteGame\\Content\\Paks\\pakchunk9000-WindowsClient.pak");
-
-            if (File.Exists(fmodPak)) //Did a fmod pak check because i host 8.51 and friends are not smart
+            catch (Exception ex)
             {
-                File.Delete(fmodPak);
-                File.Delete(fmodPak.Replace(".pak", ".sig"));
-            }
-
-            var fmodContentPak = Path.Combine(path, "FortniteGame\\Content\\Paks\\z_FModContent1.pak");
-            if (File.Exists(fmodContentPak)) //Changed my old pak name because why not
-            {
-                File.Delete(fmodContentPak);
-                File.Delete(fmodContentPak.Replace(".pak", ".sig"));
+                Logger.Log(ex.ToString(), LogLevel.Error);
+                FileUtils.OpenLogError(ex, "Download error");
             }
         }
 
-        public static async Task DownloadNative(string path)
-            => await File.WriteAllBytesAsync(Path.Combine(path, "KaedeNative.dll"), await new HttpClient().GetByteArrayAsync(Endpoints.Native));
+        private static void ProgressChanged(object obj, DownloadProgressChangedEventArgs e)
+        {
+            var Logger = $"Downloading Custom Pak\n{e.ProgressPercentage}% of 100%, {((e.BytesReceived / 1024f) / 1024f).ToString("#0.##")}MB of {((e.TotalBytesToReceive / 1024f) / 1024f).ToString("#0.##")}MB.";
 
-        public static async Task DownloadFakeLauncher(string path)
-            => await File.WriteAllBytesAsync(path, await new HttpClient().GetByteArrayAsync(Endpoints.LauncherFake));
+            totalfix = $"{((e.TotalBytesToReceive / 1024f) / 1024f).ToString("#0.##")}MB.";
 
-        public static async Task DownloadShipping(string path)
-           => await File.WriteAllBytesAsync(path, await new HttpClient().GetByteArrayAsync(Endpoints.Shipping));
+            counter++;
+
+            Utils.Logger.Log(Logger, LogLevel.Debug);
+
+            if (counter % 65 == 0)
+                MainWindowStatic.Dispatcher.Invoke(async () =>
+                {
+                    MainWindowStatic.loadingLabel.Text = Logger;
+                });
+        }
+
+        private static void Completed(object obj, AsyncCompletedEventArgs e)
+        {
+            MainWindowStatic.Dispatcher.Invoke(async () =>
+            {
+                MainWindowStatic.loadingLabel.Text = $"Downloading Custom Pak\n100% of 100%, {totalfix}MB of {totalfix}MB.";
+            });
+        }
     }
 }

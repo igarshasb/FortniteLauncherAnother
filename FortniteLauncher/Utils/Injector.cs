@@ -29,6 +29,8 @@ namespace FortniteLauncher.Utils
             Win32.WriteProcessMemory(handle, address, Encoding.Default.GetBytes(path), size, out UIntPtr bytesWritten);
 
             Win32.CreateRemoteThread(handle, IntPtr.Zero, 0, loadLibrary, address, 0, IntPtr.Zero);
+
+            Logger.Log($"Injected Runtime into {processId}");
         }
     }
 }
